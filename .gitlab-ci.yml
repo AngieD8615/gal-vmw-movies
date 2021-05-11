@@ -1,6 +1,7 @@
 stages:
-  -build
-  -test
+  - build
+  - test
+
 
 build-Movies-project:
   image: adoptopenJDK:11
@@ -8,13 +9,12 @@ build-Movies-project:
   script:
     - ./gradlew bootJar
   artifacts:
-    path:
+    paths:
       - build/libs/*.jar
-    expires-in: 30 days
+    expire_in: 30 days
 
 test:
   stage: test
-  needs: build-Movies-project
   script:
     ./gradlew test
   artifacts:
