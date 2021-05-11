@@ -21,3 +21,6 @@ test:
     paths:
       - build/test-results/test/TEST*.xml
     expire_in: 30 days
+
+# Test coverage
+# Set up docker file
