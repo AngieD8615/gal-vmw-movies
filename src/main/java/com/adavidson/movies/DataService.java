@@ -12,6 +12,7 @@ public class DataService {
     int index = 0;
 
     public List<Movie> getMovies() {
+//        return null;
         return movieList;
     }
 
