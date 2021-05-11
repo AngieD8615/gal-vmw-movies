@@ -4,7 +4,7 @@ stages:
 
 
 build-Movies-project:
-  image: adoptopenjdk:11
+  image: openjdk:11
   stage: build
   script:
     - ./gradlew bootJar
