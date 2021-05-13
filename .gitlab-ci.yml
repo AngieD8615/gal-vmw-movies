@@ -1,0 +1,26 @@
+image: openjdk:11
+
+stages:
+  - build
+  - test
+
+build-Movies-project:
+  stage: build
+  script:
+    - ./gradlew bootJar
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 30 days
+
+test:
+  stage: test
+  script:
+    ./gradlew test
+  artifacts:
+    paths:
+      - build/test-results/test/TEST*.xml
+    expire_in: 30 days
+
+# Test coverage
+# Set up docker file
