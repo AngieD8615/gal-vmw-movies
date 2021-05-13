@@ -12,13 +12,14 @@ public class DataService {
     int index = 0;
 
     public List<Movie> getMovies() {
-//        return null;
-        return movieList;
+//        return movieList;
+        return null;
     }
 
     public Movie addMovie(Movie movie) {
-        movie.setId(index++);
-        movieList.add(movie);
-        return movie;
+//        movie.setId(index++);
+//        movieList.add(movie);
+//        return movie;
+        return null;
     }
 }

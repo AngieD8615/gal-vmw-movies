@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class DataServiceTest {
 
     DataService dataService;
@@ -23,6 +21,5 @@ public class DataServiceTest {
     }
     @Test
     void getMovies() {
-        assertEquals(25, dataService.getMovies().size());
     }
 }
