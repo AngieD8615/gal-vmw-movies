@@ -22,7 +22,7 @@ components:
           enum:
             - "P"
             - "PG"
-            - "PG-13"
+            - "PG13"
             - "R"
         genre:
           type: string
@@ -81,11 +81,6 @@ paths:
     get:
       summary: returns a list of movies
       parameters:
-        - name: director
-          in: query
-          schema:
-            type: string
-          required: false
         - name: actor
           in: query
           schema:
@@ -98,13 +93,12 @@ paths:
           required: false
       responses:
         '200':
-          description: A JSON array of movie names
+          description: A JSON object with movies and size properties
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/movie'
+                type: object
+                $ref: '#/components/schemas/movie-list'
         '204':
           description: No movies found matching the search criteria
 
