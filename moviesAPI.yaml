@@ -102,8 +102,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                $ref: '#/components/schemas/movie-list'
+                type: array
+                items:
+                  $ref: '#/components/schemas/movie'
         '204':
           description: No movies found matching the search criteria
 
