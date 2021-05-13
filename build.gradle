@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-//	id 'jacoco'
+
 }
 
 group = 'com.adavidson'
@@ -20,23 +20,5 @@ dependencies {
 
 test {
 	useJUnitPlatform()
-//	finalizedBy jacocoTestReport
+	finalizedBy("jacocoTestReport")
 }
-
-//jacocoTestReport {
-//	reports {
-//		xml.enabled false
-//		csv.enabled false
-//		html.destination layout.buildDirectory.dir('jacocoHtml').get().asFile
-//	}
-//}
-//
-//jacocoTestCoverageVerification {
-//	violationRules {
-//		rule {
-//			limit {
-//				minimum = 0.5
-//			}
-//		}
-//	}
-//}
