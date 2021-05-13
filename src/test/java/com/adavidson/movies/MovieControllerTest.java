@@ -74,7 +74,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    void addMovie() throws Exception {
+    void addMovie_successfullyCreated_returnsMovie() throws Exception {
         Movie movie = new Movie("Movie Name", "person", 2020);
         when(dataService.addMovie(any(Movie.class))).thenReturn(movie);
         String json = mapper.writeValueAsString(movie);
@@ -84,7 +84,18 @@ public class MovieControllerTest {
                         .content(json))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("title").value("Movie Name"));
+                .andExpect(jsonPath("title").value("Movie Name"))
+                .andExpect(jsonPath("year").value(2020));
     }
 
+    @Test
+    void addMovie_badRequest_returnsInvalidException() throws Exception {
+        when(dataService.addMovie(any(Movie.class))).thenThrow(InvalidMovieException.class);
+
+        mockMvc.perform(post("/api/movies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"foo\":\"bar\"}"))
+                .andExpect(status().isBadRequest());
+
+    }
 }

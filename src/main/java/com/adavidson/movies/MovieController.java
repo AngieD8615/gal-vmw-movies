@@ -1,5 +1,6 @@
 package com.adavidson.movies;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,18 @@ public class MovieController {
         } else {
             movieList = dataService.getMovies(actor, title);
         }
-
         return movieList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(movieList);
     }
 
     @PostMapping()
-    public Movie addMovie (@RequestBody String title) {
-        Movie newMovie = new Movie(title);
+    public Movie addMovie (@RequestBody(required = false) Movie data) {
+
+        Movie newMovie = new Movie(data.getTitle(), data.getDirector(), data.getYear());
         return dataService.addMovie(newMovie);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void invalidMovieExceptionHandler(InvalidMovieException e) {
     }
 }
