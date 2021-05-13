@@ -20,13 +20,18 @@ components:
         rating:
           type: string
           enum:
-            - "P"
-            - "PG"
-            - "PG13"
-            - "R"
+            - P
+            - PG
+            - PG13
+            - R
         genre:
           type: string
-          example: "action"
+          enum:
+            - horror
+            - action
+            - romance
+            - drama
+            - comedy
         reviewStars:
           type: integer
           minimum: 1
