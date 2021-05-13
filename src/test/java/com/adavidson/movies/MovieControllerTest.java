@@ -1,6 +1,7 @@
 package com.adavidson.movies;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,43 +25,66 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest
-public class movieControllerTest {
+public class MovieControllerTest {
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     DataService dataService;
 
-    List<Movie> movieList;
+    List<Movie> movies;
+
+    ObjectMapper mapper = new ObjectMapper();
+    Movie mappedMovie = new Movie("Movie Name", "person", 2020);
 
     @BeforeEach
     void setUp() {
-        movieList = new ArrayList<>();
+        movies = new ArrayList<>();
         for (int i = 0; i < 10; i++){
-            movieList.add(new Movie("Title_" + i));
+            movies.add(new Movie("Title_" + i));
         }
     }
 
     @Test
-    void getData() throws Exception {
-        when(dataService.getMovies()).thenReturn(movieList);
+    void getMovies_noArgs_exists_returnAllMovies() throws Exception {
+        when(dataService.getMovies()).thenReturn(new MovieList(movies));
 
-        mockMvc.perform(get("/movies"))
+        mockMvc.perform(get("/api/movies"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(10)));
+                .andExpect(jsonPath("$.movies", hasSize(10)));
+    }
+
+    @Test
+    void getMovies_noArgs_noneExist_returnNoContext() throws Exception {
+        when(dataService.getMovies()).thenReturn(new MovieList());
+
+        mockMvc.perform(get("/api/movies"))
+                .andExpect(status().isNoContent());
+
+    }
+
+    @Test
+    void getMovies_withSearchParam_returnListOfMatchingMovies() throws Exception {
+        when(dataService.getMovies(anyString(), anyString())).thenReturn(new MovieList(movies));
+
+        mockMvc.perform(get("/api/movies?actor=person&title=thisMovie"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.movies", hasSize(10)));
+
     }
 
     @Test
     void addMovie() throws Exception {
-        Movie movie = new Movie("New Movie");
+        Movie movie = new Movie("Movie Name", "person", 2020);
         when(dataService.addMovie(any(Movie.class))).thenReturn(movie);
+        String json = mapper.writeValueAsString(movie);
 
-        mockMvc.perform(post("/movies")
+        mockMvc.perform(post("/api/movies")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"title\":\"New Movie\"}"))
+                        .content(json))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("title").value("New Movie"));
+                .andExpect(jsonPath("title").value("Movie Name"));
     }
 
 }

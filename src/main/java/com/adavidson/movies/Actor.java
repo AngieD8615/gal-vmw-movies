@@ -1,2 +1,4 @@
-package com.adavidson.movies;public class Actor {
+package com.adavidson.movies;
+
+public class Actor {
 }
