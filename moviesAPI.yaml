@@ -20,13 +20,18 @@ components:
         rating:
           type: string
           enum:
-            - "P"
-            - "PG"
-            - "PG-13"
-            - "R"
+            - P
+            - PG
+            - PG13
+            - R
         genre:
           type: string
-          example: "action"
+          enum:
+            - horror
+            - action
+            - romance
+            - drama
+            - comedy
         reviewStars:
           type: integer
           minimum: 1
@@ -81,11 +86,6 @@ paths:
     get:
       summary: returns a list of movies
       parameters:
-        - name: director
-          in: query
-          schema:
-            type: string
-          required: false
         - name: actor
           in: query
           schema:
@@ -98,7 +98,7 @@ paths:
           required: false
       responses:
         '200':
-          description: A JSON array of movie names
+          description: A JSON object with movies and size properties
           content:
             application/json:
               schema:
