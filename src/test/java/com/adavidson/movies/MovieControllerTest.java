@@ -98,4 +98,23 @@ public class MovieControllerTest {
                 .andExpect(status().isBadRequest());
 
     }
+
+    @Test
+    void getMovieById_returnsMove() throws Exception {
+        Movie movie = new Movie("Movie Name", "person", 2020);
+        when(dataService.getMovieById(anyString())).thenReturn(movie);
+
+        mockMvc.perform(get("/api/movies/movieIdHere"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("title").value("Movie Name"));
+    }
+
+    @Test
+    void getMovieById_IdNotValid_returnsNoContent() throws Exception {
+        when(dataService.getMovieById(anyString())).thenReturn(null);
+
+        mockMvc.perform(get("/api/movies/movieIdHere"))
+                .andExpect(status().isNoContent());
+
+    }
 }

@@ -33,8 +33,15 @@ public class MovieController {
         return dataService.addMovie(newMovie);
     }
 
+    @GetMapping("/{movie_id}")
+    public Movie getMovieById (@PathVariable String movie_id) {
+
+        return dataService.getMovieById(movie_id);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void invalidMovieExceptionHandler(InvalidMovieException e) {
     }
+
 }
