@@ -60,7 +60,6 @@ public class MovieControllerTest {
 
         mockMvc.perform(get("/api/movies"))
                 .andExpect(status().isNoContent());
-
     }
 
     @Test
@@ -70,7 +69,6 @@ public class MovieControllerTest {
         mockMvc.perform(get("/api/movies?actor=person&title=thisMovie"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.movies", hasSize(10)));
-
     }
 
     @Test
@@ -78,7 +76,7 @@ public class MovieControllerTest {
         Movie movie = new Movie("Movie Name", "person", 2020);
         when(dataService.addMovie(any(Movie.class))).thenReturn(movie);
         String json = mapper.writeValueAsString(movie);
-
+        movie.setMovie_id(100L);
         mockMvc.perform(post("/api/movies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

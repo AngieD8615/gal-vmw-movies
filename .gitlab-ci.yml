@@ -3,6 +3,7 @@ image: openjdk:11
 stages:
   - build
   - test
+  - coverage
 
 build-Movies-project:
   stage: build
@@ -22,5 +23,20 @@ test:
       - build/test-results/test/TEST*.xml
     expire_in: 30 days
 
-# Test coverage
+
+codeCoverage:
+  image: adoptopenjdk:11
+  needs:
+    - build-rescue
+    - test
+  stage: coverage
+  script:
+    - ./gradlew jacocoTestReport
+    - ./gradlew jacocoTestCoverageVerification
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - build/reports/jacoco/
+
 # Set up docker file

@@ -1,9 +1,18 @@
 package com.adavidson.movies;
 
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 import java.util.List;
 
+@Entity
+@Table(name = "movies")
 public class Movie {
-    private int movie_id;
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long movie_id;
     private String title;
     private String director;
     private int year;
@@ -29,11 +38,11 @@ public class Movie {
         this.year = year;
     }
 
-    public int getMovie_id() {
+    public Long getMovie_id() {
         return movie_id;
     }
 
-    public void setMovie_id(int movie_id) {
+    public void setMovie_id(Long movie_id) {
         this.movie_id = movie_id;
     }
 
