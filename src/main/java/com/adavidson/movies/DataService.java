@@ -6,6 +6,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DataService {
+    MoviesRepository moviesRepository;
+
+    public DataService(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
+    }
+
     public MovieList getMovies() {
         return null;
     }
