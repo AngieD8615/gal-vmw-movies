@@ -21,4 +21,8 @@ public class DataService {
     public Movie getMovieById(String movie_id) {
         return null;
     }
+
+    public void deleteMovieById(String id) {
+
+    }
 }

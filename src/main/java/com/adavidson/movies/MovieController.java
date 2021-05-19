@@ -28,17 +28,24 @@ public class MovieController {
 
     @PostMapping()
     public Movie addMovie (@RequestBody(required = false) Movie data) {
-
         Movie newMovie = new Movie(data.getTitle(), data.getDirector(), data.getYear());
         return dataService.addMovie(newMovie);
     }
 
     @GetMapping("/{movie_id}")
-    public Movie getMovieById (@PathVariable String movie_id) {
-
-        return dataService.getMovieById(movie_id);
+    public ResponseEntity<Movie> getMovieById (@PathVariable String movie_id) {
+        return dataService.getMovieById(movie_id) == null? ResponseEntity.noContent().build() : ResponseEntity.ok(dataService.getMovieById(movie_id));
     }
 
+    @DeleteMapping("/{movie_id}")
+    public ResponseEntity deleteMovieById (@PathVariable String movie_id) {
+        try {
+            dataService.deleteMovieById(movie_id);
+        } catch (InvalidMovieException e){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void invalidMovieExceptionHandler(InvalidMovieException e) {

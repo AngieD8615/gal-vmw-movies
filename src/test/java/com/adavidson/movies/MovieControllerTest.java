@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -113,6 +113,19 @@ public class MovieControllerTest {
 
         mockMvc.perform(get("/api/movies/movieIdHere"))
                 .andExpect(status().isNoContent());
+    }
 
+    @Test
+    void deleteMovieById_valid_returnsAccepted() throws Exception {
+        mockMvc.perform(delete("/api/movies/movieIdHere"))
+                .andExpect(status().isAccepted());
+        verify(dataService).deleteMovieById(anyString());
+    }
+
+    @Test
+    void deleteMovie_validId_doesNotExist_returnNoContent() throws Exception {
+        doThrow(new InvalidMovieException()).when(dataService).deleteMovieById(anyString());
+        mockMvc.perform(delete("/api/movies/abc"))
+                .andExpect(status().isNoContent());
     }
 }
