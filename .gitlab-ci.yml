@@ -5,7 +5,7 @@ stages:
   - test
   - coverage
 
-build-Movies-project:
+build-movies-project:
   stage: build
   script:
     - ./gradlew bootJar
@@ -27,7 +27,7 @@ test:
 codeCoverage:
   image: adoptopenjdk:11
   needs:
-    - build-rescue
+    - build-movies-project
     - test
   stage: coverage
   script:
