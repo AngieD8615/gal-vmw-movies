@@ -66,7 +66,7 @@ public class MovieControllerTest {
     void getMovies_withSearchParam_returnListOfMatchingMovies() throws Exception {
         when(dataService.getMovies(anyString(), anyString())).thenReturn(new MovieList(movies));
 
-        mockMvc.perform(get("/api/movies?actor=person&title=thisMovie"))
+        mockMvc.perform(get("/api/movies?director=person&title=thisMovie"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.movies", hasSize(10)));
     }

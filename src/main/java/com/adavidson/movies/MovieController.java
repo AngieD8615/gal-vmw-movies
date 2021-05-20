@@ -15,13 +15,13 @@ public class MovieController {
     }
 
     @GetMapping()
-    public ResponseEntity<MovieList> getMovies (@RequestParam(required = false) String actor,
+    public ResponseEntity<MovieList> getMovies (@RequestParam(required = false) String director,
                                                 @RequestParam(required = false) String title) {
         MovieList movieList;
-        if (actor == null && title == null) {
+        if (director == null && title == null) {
             movieList = dataService.getMovies();
         } else {
-            movieList = dataService.getMovies(actor, title);
+            movieList = dataService.getMovies(director, title);
         }
         return movieList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(movieList);
     }

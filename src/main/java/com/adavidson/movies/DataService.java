@@ -2,6 +2,7 @@ package com.adavidson.movies;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -13,15 +14,19 @@ public class DataService {
     }
 
     public MovieList getMovies() {
-        return null;
+        return new MovieList(moviesRepository.findAll());
     }
 
-    public MovieList getMovies(String actor, String title) {
+    public MovieList getMovies(String director, String title) {
+        List<Movie> movies = moviesRepository.findByDirectorContainsAndTitleContains(director, title);
+        if(!movies.isEmpty()) {
+            return new MovieList(movies);
+        }
         return null;
     }
 
     public Movie addMovie(Movie movie) {
-        return null;
+        return moviesRepository.save(movie);
     }
 
     public Movie getMovieById(String movie_id) {

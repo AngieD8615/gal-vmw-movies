@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name = "movies")
@@ -19,7 +18,6 @@ public class Movie {
     private Rating rating;
     private String genre;
     private int reviewStars;
-    private List<Actor> actors;
 
     enum Rating {
         P, PG, PG13, R
@@ -92,13 +90,5 @@ public class Movie {
 
     public void setReviewStars(int reviewStars) {
         this.reviewStars = reviewStars;
-    }
-
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
     }
 }
