@@ -3,6 +3,7 @@ package com.adavidson.movies;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -29,11 +30,16 @@ public class DataService {
         return moviesRepository.save(movie);
     }
 
-    public Movie getMovieById(String movie_id) {
-        return null;
+    public Movie getMovieById(Long movie_id) {
+        return moviesRepository.findById(movie_id).orElse(null);
     }
 
-    public void deleteMovieById(String id) {
-
+    public void deleteMovieById(Long id) {
+        Optional<Movie> oMovie = moviesRepository.findById(id);
+        if (oMovie.isPresent()) {
+            moviesRepository.delete(oMovie.get());
+        } else {
+            throw new InvalidMovieException();
+        }
     }
 }

@@ -33,12 +33,12 @@ public class MovieController {
     }
 
     @GetMapping("/{movie_id}")
-    public ResponseEntity<Movie> getMovieById (@PathVariable String movie_id) {
+    public ResponseEntity<Movie> getMovieById (@PathVariable Long movie_id) {
         return dataService.getMovieById(movie_id) == null? ResponseEntity.noContent().build() : ResponseEntity.ok(dataService.getMovieById(movie_id));
     }
 
     @DeleteMapping("/{movie_id}")
-    public ResponseEntity deleteMovieById (@PathVariable String movie_id) {
+    public ResponseEntity deleteMovieById (@PathVariable Long movie_id) {
         try {
             dataService.deleteMovieById(movie_id);
         } catch (InvalidMovieException e){

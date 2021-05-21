@@ -100,32 +100,32 @@ public class MovieControllerTest {
     @Test
     void getMovieById_returnsMove() throws Exception {
         Movie movie = new Movie("Movie Name", "person", 2020);
-        when(dataService.getMovieById(anyString())).thenReturn(movie);
+        when(dataService.getMovieById(anyLong())).thenReturn(movie);
 
-        mockMvc.perform(get("/api/movies/movieIdHere"))
+        mockMvc.perform(get("/api/movies/" + anyLong()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("title").value("Movie Name"));
     }
 
     @Test
     void getMovieById_IdNotValid_returnsNoContent() throws Exception {
-        when(dataService.getMovieById(anyString())).thenReturn(null);
+        when(dataService.getMovieById(anyLong())).thenReturn(null);
 
-        mockMvc.perform(get("/api/movies/movieIdHere"))
+        mockMvc.perform(get("/api/movies/" + anyLong()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void deleteMovieById_valid_returnsAccepted() throws Exception {
-        mockMvc.perform(delete("/api/movies/movieIdHere"))
+        mockMvc.perform(delete("/api/movies/" + anyLong()))
                 .andExpect(status().isAccepted());
-        verify(dataService).deleteMovieById(anyString());
+        verify(dataService).deleteMovieById(anyLong());
     }
 
     @Test
     void deleteMovie_validId_doesNotExist_returnNoContent() throws Exception {
-        doThrow(new InvalidMovieException()).when(dataService).deleteMovieById(anyString());
-        mockMvc.perform(delete("/api/movies/abc"))
+        doThrow(new InvalidMovieException()).when(dataService).deleteMovieById(anyLong());
+        mockMvc.perform(delete("/api/movies/" + anyLong()))
                 .andExpect(status().isNoContent());
     }
 }
