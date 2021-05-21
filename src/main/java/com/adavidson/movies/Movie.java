@@ -1,16 +1,14 @@
 package com.adavidson.movies;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "movies")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Movie {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movie_id;
     private String title;
     private String director;
