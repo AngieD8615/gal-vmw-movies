@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,17 +60,15 @@ public class MovieControllerTest {
 
         mockMvc.perform(get("/api/movies"))
                 .andExpect(status().isNoContent());
-
     }
 
     @Test
     void getMovies_withSearchParam_returnListOfMatchingMovies() throws Exception {
         when(dataService.getMovies(anyString(), anyString())).thenReturn(new MovieList(movies));
 
-        mockMvc.perform(get("/api/movies?actor=person&title=thisMovie"))
+        mockMvc.perform(get("/api/movies?director=person&title=thisMovie"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.movies", hasSize(10)));
-
     }
 
     @Test
@@ -78,7 +76,7 @@ public class MovieControllerTest {
         Movie movie = new Movie("Movie Name", "person", 2020);
         when(dataService.addMovie(any(Movie.class))).thenReturn(movie);
         String json = mapper.writeValueAsString(movie);
-
+        movie.setMovie_id(100L);
         mockMvc.perform(post("/api/movies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -102,19 +100,32 @@ public class MovieControllerTest {
     @Test
     void getMovieById_returnsMove() throws Exception {
         Movie movie = new Movie("Movie Name", "person", 2020);
-        when(dataService.getMovieById(anyString())).thenReturn(movie);
+        when(dataService.getMovieById(anyLong())).thenReturn(movie);
 
-        mockMvc.perform(get("/api/movies/movieIdHere"))
+        mockMvc.perform(get("/api/movies/" + anyLong()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("title").value("Movie Name"));
     }
 
     @Test
     void getMovieById_IdNotValid_returnsNoContent() throws Exception {
-        when(dataService.getMovieById(anyString())).thenReturn(null);
+        when(dataService.getMovieById(anyLong())).thenReturn(null);
 
-        mockMvc.perform(get("/api/movies/movieIdHere"))
+        mockMvc.perform(get("/api/movies/" + anyLong()))
                 .andExpect(status().isNoContent());
+    }
 
+    @Test
+    void deleteMovieById_valid_returnsAccepted() throws Exception {
+        mockMvc.perform(delete("/api/movies/" + anyLong()))
+                .andExpect(status().isAccepted());
+        verify(dataService).deleteMovieById(anyLong());
+    }
+
+    @Test
+    void deleteMovie_validId_doesNotExist_returnNoContent() throws Exception {
+        doThrow(new InvalidMovieException()).when(dataService).deleteMovieById(anyLong());
+        mockMvc.perform(delete("/api/movies/" + anyLong()))
+                .andExpect(status().isNoContent());
     }
 }

@@ -15,30 +15,37 @@ public class MovieController {
     }
 
     @GetMapping()
-    public ResponseEntity<MovieList> getMovies (@RequestParam(required = false) String actor,
+    public ResponseEntity<MovieList> getMovies (@RequestParam(required = false) String director,
                                                 @RequestParam(required = false) String title) {
         MovieList movieList;
-        if (actor == null && title == null) {
+        if (director == null && title == null) {
             movieList = dataService.getMovies();
         } else {
-            movieList = dataService.getMovies(actor, title);
+            movieList = dataService.getMovies(director, title);
         }
         return movieList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(movieList);
     }
 
     @PostMapping()
     public Movie addMovie (@RequestBody(required = false) Movie data) {
-
         Movie newMovie = new Movie(data.getTitle(), data.getDirector(), data.getYear());
         return dataService.addMovie(newMovie);
     }
 
     @GetMapping("/{movie_id}")
-    public Movie getMovieById (@PathVariable String movie_id) {
-
-        return dataService.getMovieById(movie_id);
+    public ResponseEntity<Movie> getMovieById (@PathVariable Long movie_id) {
+        return dataService.getMovieById(movie_id) == null? ResponseEntity.noContent().build() : ResponseEntity.ok(dataService.getMovieById(movie_id));
     }
 
+    @DeleteMapping("/{movie_id}")
+    public ResponseEntity deleteMovieById (@PathVariable Long movie_id) {
+        try {
+            dataService.deleteMovieById(movie_id);
+        } catch (InvalidMovieException e){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void invalidMovieExceptionHandler(InvalidMovieException e) {

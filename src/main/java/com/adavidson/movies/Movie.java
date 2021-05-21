@@ -1,16 +1,23 @@
 package com.adavidson.movies;
 
-import java.util.List;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "movies")
 public class Movie {
-    private int movie_id;
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long movie_id;
     private String title;
     private String director;
     private int year;
     private Rating rating;
     private String genre;
     private int reviewStars;
-    private List<Actor> actors;
 
     enum Rating {
         P, PG, PG13, R
@@ -29,11 +36,11 @@ public class Movie {
         this.year = year;
     }
 
-    public int getMovie_id() {
+    public Long getMovie_id() {
         return movie_id;
     }
 
-    public void setMovie_id(int movie_id) {
+    public void setMovie_id(Long movie_id) {
         this.movie_id = movie_id;
     }
 
@@ -83,13 +90,5 @@ public class Movie {
 
     public void setReviewStars(int reviewStars) {
         this.reviewStars = reviewStars;
-    }
-
-    public List<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
     }
 }
