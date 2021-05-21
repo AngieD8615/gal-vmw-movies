@@ -4,6 +4,7 @@ stages:
   - build
   - test
   - coverage
+  - docker
 
 build-movies-project:
   stage: build
@@ -39,4 +40,19 @@ codeCoverage:
     paths:
       - build/reports/jacoco/
 
-# Set up docker file
+docker:
+  image: docker:20
+  needs:
+    - build-movies-project
+    - test
+  stage: docker
+  services:
+    - docker:dind
+  before_script:
+    - echo "$MY_NAME"
+    - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" .
+    - docker push "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID"
+    - docker tag "$CI_REGISTRY_IMAGE":"$CI_PIPELINE_IID" "$CI_REGISTRY_IMAGE":"latest"
+    - docker push "$CI_REGISTRY_IMAGE":"latest"
