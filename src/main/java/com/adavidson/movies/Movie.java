@@ -1,9 +1,12 @@
 package com.adavidson.movies;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "movies")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Movie {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movie_id;
