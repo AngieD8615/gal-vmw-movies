@@ -4,6 +4,7 @@ stages:
   - build
   - test
   - coverage
+  - docker
 
 build-movies-project:
   stage: build
