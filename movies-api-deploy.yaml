@@ -22,10 +22,10 @@ spec:
             - name: DB_HOST
               value: 52.26.72.203
             - name: DB_NAME
-              value: autos
+              value: my_cool_db
             - name: DB_USER
-              value: auto_user
+              value: my_user
             - name: DB_PWD
-              value: auto_user
+              value: my_user_pwd
       imagePullSecrets: # Be sure the token name matches what you created on K8s
         - name: movies-api
