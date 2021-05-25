@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: [app-name]
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moviesAPI
+  template:
+    metadata:
+      labels:
+        app: moviesApi
+    spec:
+      containers:
+        - image: registry.gitlab.com/adavidson11/movies
+          name: moviesAPI
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: 52.26.72.203
+            - name: DB_NAME
+              value: movies
+            - name: DB_USER
+              value: movie_user
+            - name: DB_PWD
+              value: movie_user
+      imagePullSecrets: # Be sure the token name matches what you created on K8s
+        - name: angie-movies-api
