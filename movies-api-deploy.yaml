@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: angie-movies-api-lb
+  name: angie-movies-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: angie-movies-api-lb
+      app: angie-movies-api
   template:
     metadata:
       labels:
-        app: angie-movies-api-lb
+        app: angie-movies-api
     spec:
       containers:
         - image: registry.gitlab.com/adavidson11/movies
-          name: angie-movies-api-lb
+          name: angie-movies-api
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
