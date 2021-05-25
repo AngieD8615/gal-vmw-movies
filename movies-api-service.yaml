@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: angie-movies-api-lb
+  name: movies-lb
 spec:
   type: LoadBalancer
   selector:
-    app: angie-movies-api-lb
+    app: movies-lb
   ports:
     - protocol: TCP
       port: 8080
