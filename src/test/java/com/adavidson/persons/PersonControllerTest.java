@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
@@ -40,6 +41,23 @@ public class PersonControllerTest {
         when(personDataService.getPersons()).thenReturn(new PersonList(persons));
 
         mockMvc.perform(get("/api/persons"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.persons", hasSize(10)));
+    }
+
+    @Test
+    void getPersons_noArgs_doesNotExists_returnNoContent() throws Exception {
+        when(personDataService.getPersons()).thenReturn(new PersonList());
+
+        mockMvc.perform(get("/api/persons"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void getPersons_hasNameParam_exists_returnAllMovies() throws Exception {
+        when(personDataService.getPersons(anyString())).thenReturn(new PersonList(persons));
+
+        mockMvc.perform(get("/api/persons?name=someName"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.persons", hasSize(10)));
     }
