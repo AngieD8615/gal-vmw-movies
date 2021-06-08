@@ -5,7 +5,7 @@ components:
     person:
       description: A single person who played a role in creating a movie
       type: object
-      properies:
+      properties:
         person_id:
           type: integer
         name:
@@ -31,30 +31,6 @@ components:
           items:
             $ref: '#/components/schemas/person'
 
-    a-persons-movie-list:
-      description: A list of all the movies that a single person has played a role in creating
-      type: object
-        properties:
-          a-persons-movies:
-            type: array
-            properties:
-              persons:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    role:
-                      type: string
-                      enum:
-                        - ACTOR
-                        - WRITER
-                        - DIRECTOR
-                        - CUSTUM_DESIGN
-                        - MUSICAL_COMPOSER
-                        - MAKE_UP
-                    movie_id:
-                      type: integer
-
 info:
   title: Persons
   description: This is an API which provides endpoints to get/post/update/delete people who took part in creating a movie
@@ -65,6 +41,108 @@ paths:
   /persons:
     get:
       summary: returns a list of all the persons
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
-          description: OK
+          description: A JSON object with persons and size properties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  persons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/person'
+                  size:
+                    type: integer
+        '204':
+          description: No persons found matching the search criteria
+    post:
+      summary: create a new person
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/person'
+      responses:
+        '201':
+          description: created
+        '400':
+          description: error
+
+  /persons/{person_id}:
+    get:
+      summary: returns a list of all movies and the role a person has been in
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          description: the id of the person querrying
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: an JSON object containing a list of roles with movies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  person:
+                    type: string
+                  movies:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: string
+                          enum:
+                            - ACTOR
+                            - WRITER
+                            - DIRECTOR
+                            - CUSTUM_DESIGN
+                            - MUSICAL_COMPOSER
+                            - MAKE_UP
+                        movie_id:
+                          type: integer
+                  size:
+                    type: integer
+        '204':
+          description: No persons found matching the search criteria
+    
+    patch:
+      summary: update a person given a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/person'
+      responses:
+        '201':
+          description: updated
+        '400':
+          description: error
+
+    delete:
+      summary: delete a person
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          description: the id of the person being deleted
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: deleted the person
+        '400':
+          description: No person found matching the id

@@ -65,13 +65,8 @@ servers:
 paths:
   /movies:
     get:
-      summary: returns a list of movies
+      summary: returns an object with a list of all movies
       parameters:
-        - name: actor
-          in: query
-          schema:
-            type: string
-          required: false
         - name: title
           in: query
           schema:
@@ -83,15 +78,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/movie'
+                type: object
+                properties:
+                  movies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/movie'
+                  size:
+                    type: integer
         '204':
           description: No movies found matching the search criteria
 
 
     post:
-      summary: creates a list
+      summary: creates a movie
       requestBody:
         required: true
         content:
