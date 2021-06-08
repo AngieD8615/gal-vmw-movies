@@ -15,7 +15,7 @@ public class Person {
     private Long movie_id;
 
     enum Role {
-        ACTOR, WRITER, DIRECTOR, CUSTUM_DESIGN, MUSICAL_COMPOSER, MAKE_UP
+        ACTOR, WRITER, DIRECTOR, COSTUME_DESIGN, MUSICAL_COMPOSER, MAKE_UP
     }
 
     public Person() {}

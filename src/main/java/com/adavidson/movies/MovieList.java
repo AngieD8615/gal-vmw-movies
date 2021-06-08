@@ -6,8 +6,7 @@ public class MovieList {
     private List<Movie> movies;
     private int size = 0;
 
-    public MovieList() {
-    }
+    public MovieList() {}
 
     public MovieList(List<Movie> movies) {
         this.movies = movies;

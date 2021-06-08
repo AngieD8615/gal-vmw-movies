@@ -38,7 +38,7 @@ info:
 servers:
   - url: https://api.persons.com/
 paths:
-  /persons:
+  /api/persons:
     get:
       summary: returns a list of all the persons
       parameters:
@@ -77,7 +77,7 @@ paths:
         '400':
           description: error
 
-  /persons/{person_id}:
+  /api/persons/{person_id}:
     get:
       summary: returns a list of all movies and the role a person has been in
       parameters:

@@ -7,10 +7,10 @@ import java.util.Optional;
 
 
 @Service
-public class DataService {
+public class MoviesDataService {
     MoviesRepository moviesRepository;
 
-    public DataService(MoviesRepository moviesRepository) {
+    public MoviesDataService(MoviesRepository moviesRepository) {
         this.moviesRepository = moviesRepository;
     }
 

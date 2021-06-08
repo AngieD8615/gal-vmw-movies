@@ -16,22 +16,22 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class DataServiceTest {
-    private DataService dataService;
+class MoviesDataServiceTest {
+    private MoviesDataService moviesDataService;
 
     @Mock
     MoviesRepository moviesRepository;
 
     @BeforeEach
     void setUp() {
-        dataService = new DataService(moviesRepository);
+        moviesDataService = new MoviesDataService(moviesRepository);
     }
 
     @Test
     void getMovies() {
         Movie movie = new Movie("thisMove", "thisDirector", 2020);
         when(moviesRepository.findAll()).thenReturn(Arrays.asList(movie));
-        MovieList movieList = dataService.getMovies();
+        MovieList movieList = moviesDataService.getMovies();
         assertThat(movieList).isNotNull();
     }
 
@@ -40,7 +40,7 @@ class DataServiceTest {
         Movie movie = new Movie("thisMove", "thisDirector", 2020);
         when(moviesRepository.findByDirectorContainsAndTitleContains(anyString(), anyString()))
                 .thenReturn(Arrays.asList(movie));
-        MovieList movieList = dataService.getMovies("thisDirector", "thisMovie");
+        MovieList movieList = moviesDataService.getMovies("thisDirector", "thisMovie");
         assertThat(movieList).isNotNull();
     }
 
@@ -50,7 +50,7 @@ class DataServiceTest {
         Movie returnedMovie = new Movie("thisMove", "thisDirector", 2020);
         returnedMovie.setMovie_id(99L);
         when(moviesRepository.save(movie)).thenReturn(returnedMovie);
-        Movie actReturnedMovie = dataService.addMovie(movie);
+        Movie actReturnedMovie = moviesDataService.addMovie(movie);
         assertThat(actReturnedMovie).isNotNull();
         assertThat(actReturnedMovie.getTitle()).isEqualTo(returnedMovie.getTitle());
     }
@@ -60,7 +60,7 @@ class DataServiceTest {
         Movie movie = new Movie("thisMove", "thisDirector", 2020);
         when(moviesRepository.findById(99L))
                 .thenReturn(java.util.Optional.of(movie));
-        Movie actMovie = dataService.getMovieById(99L);
+        Movie actMovie = moviesDataService.getMovieById(99L);
         assertThat(actMovie).isNotNull();
     }
 
@@ -70,7 +70,7 @@ class DataServiceTest {
         movie.setMovie_id(99L);
         when(moviesRepository.findById(anyLong())).thenReturn(java.util.Optional.of(movie));
 
-        dataService.deleteMovieById(movie.getMovie_id());
+        moviesDataService.deleteMovieById(movie.getMovie_id());
 
         verify(moviesRepository).delete(any(Movie.class));
     }
@@ -81,7 +81,7 @@ class DataServiceTest {
 
         assertThatExceptionOfType(InvalidMovieException.class)
                 .isThrownBy(() -> {
-                    dataService.deleteMovieById(anyLong());
+                    moviesDataService.deleteMovieById(anyLong());
         });
     }
 }

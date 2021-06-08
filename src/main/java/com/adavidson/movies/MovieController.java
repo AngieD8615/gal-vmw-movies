@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/movies")
 public class MovieController {
-    DataService dataService;
+    MoviesDataService moviesDataService;
 
     // constructor injection
-    public MovieController(DataService dataService) {
-        this.dataService = dataService;
+    public MovieController(MoviesDataService moviesDataService) {
+        this.moviesDataService = moviesDataService;
     }
 
     @GetMapping()
@@ -19,9 +19,9 @@ public class MovieController {
                                                 @RequestParam(required = false) String title) {
         MovieList movieList;
         if (director == null && title == null) {
-            movieList = dataService.getMovies();
+            movieList = moviesDataService.getMovies();
         } else {
-            movieList = dataService.getMovies(director, title);
+            movieList = moviesDataService.getMovies(director, title);
         }
         return movieList.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(movieList);
     }
@@ -29,18 +29,18 @@ public class MovieController {
     @PostMapping()
     public Movie addMovie (@RequestBody(required = false) Movie data) {
         Movie newMovie = new Movie(data.getTitle(), data.getDirector(), data.getYear());
-        return dataService.addMovie(newMovie);
+        return moviesDataService.addMovie(newMovie);
     }
 
     @GetMapping("/{movie_id}")
     public ResponseEntity<Movie> getMovieById (@PathVariable Long movie_id) {
-        return dataService.getMovieById(movie_id) == null? ResponseEntity.noContent().build() : ResponseEntity.ok(dataService.getMovieById(movie_id));
+        return moviesDataService.getMovieById(movie_id) == null? ResponseEntity.noContent().build() : ResponseEntity.ok(moviesDataService.getMovieById(movie_id));
     }
 
     @DeleteMapping("/{movie_id}")
     public ResponseEntity deleteMovieById (@PathVariable Long movie_id) {
         try {
-            dataService.deleteMovieById(movie_id);
+            moviesDataService.deleteMovieById(movie_id);
         } catch (InvalidMovieException e){
             return ResponseEntity.noContent().build();
         }
