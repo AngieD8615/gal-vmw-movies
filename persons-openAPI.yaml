@@ -1,0 +1,70 @@
+openapi: "3.0.2"
+
+components:
+  schemas:
+    person:
+      description: A single person who played a role in creating a movie
+      type: object
+      properies:
+        person_id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+          enum:
+            - ACTOR
+            - WRITER
+            - DIRECTOR
+            - CUSTUM_DESIGN
+            - MUSICAL_COMPOSER
+            - MAKE_UP
+        movie_id:
+          type: integer
+
+    persons-list:
+      description: A list of all the persons who played a role in creating a movie
+      type: object
+      properties:
+        persons:
+          type: array
+          items:
+            $ref: '#/components/schemas/person'
+
+    a-persons-movie-list:
+      description: A list of all the movies that a single person has played a role in creating
+      type: object
+        properties:
+          a-persons-movies:
+            type: array
+            properties:
+              persons:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    role:
+                      type: string
+                      enum:
+                        - ACTOR
+                        - WRITER
+                        - DIRECTOR
+                        - CUSTUM_DESIGN
+                        - MUSICAL_COMPOSER
+                        - MAKE_UP
+                    movie_id:
+                      type: integer
+
+info:
+  title: Persons
+  description: This is an API which provides endpoints to get/post/update/delete people who took part in creating a movie
+  version: "1.0"
+servers:
+  - url: https://api.persons.com/
+paths:
+  /persons:
+    get:
+      summary: returns a list of all the persons
+      responses:
+        '200':
+          description: OK

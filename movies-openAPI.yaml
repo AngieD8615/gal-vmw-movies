@@ -36,10 +36,6 @@ components:
           type: integer
           minimum: 1
           maximum: 5
-        actors:
-          type: array
-          items:
-            $ref: '#/components/schemas/actor'
 
     movie-list:
       description: A list of movies
@@ -52,24 +48,9 @@ components:
         size:
           type: integer
 
-    actor:
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        birthDate:
-          type: string
-          format: date
-
     updateActorsAndStars:
       type: object
       properties:
-        actors:
-          type: array
-          items:
-            $ref: '#/components/schemas/actor'
         reviewStars:
           type: integer
           minimum: 1
@@ -80,7 +61,7 @@ info:
   description: This is a movie API which provides endpoint to get/post/update/delete movies.
   version: '1.0'
 servers:
-  - url: https://api.movies.com/v1
+  - url: https://api.movies.com/
 paths:
   /movies:
     get:
